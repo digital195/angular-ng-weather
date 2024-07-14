@@ -15,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AsPureFunctionPipe } from './pipes/as-pure-function.pipe';
+import { TabContainerComponent } from './components/tab-container/tab-container.component';
+import { TabComponent } from './components/tab/tab.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { AsPureFunctionPipe } from './pipes/as-pure-function.pipe';
     ForecastsListComponent,
     CurrentConditionsComponent,
     MainPageComponent,
+    TabContainerComponent,
+    TabComponent,
   ],
   imports: [
     BrowserModule,

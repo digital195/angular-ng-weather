@@ -22,4 +22,8 @@ export class CurrentConditionsComponent {
   protected removeLocation(zipcode: string) {
     this.locationService.removeLocation(zipcode);
   }
+
+  protected removeLocationByIndex(index: number) {
+    this.locationService.removeLocationByIndex(index);
+  }
 }

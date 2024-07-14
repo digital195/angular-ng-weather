@@ -2,3 +2,26 @@
 body {
   padding: 10px;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.nav .active .navbar-link {
+  background-color: #23527c;
+  color: white;
+
+  .close {
+    color: white;
+    opacity: 0.8;
+  }
+
+  &:hover {
+    background-color: #23527c;
+    color: white;
+  }
+}

@@ -35,4 +35,12 @@ export class LocationService {
       localStorage.setItem(LOCATIONS, JSON.stringify(this._locations()));
     }
   }
+
+  removeLocationByIndex(index: number) {
+    const location = this._locations()[index];
+    if (location !== undefined) {
+      this._locations.update((location) => location.filter((_, i) => i !== index));
+      localStorage.setItem(LOCATIONS, JSON.stringify(this._locations()));
+    }
+  }
 }

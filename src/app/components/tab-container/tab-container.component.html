@@ -1,0 +1,18 @@
+<div class="tab-container">
+  <ul class="nav nav-tabs">
+    @for (tab of tabs(); track tab; let index = $index) {
+      <li role="presentation" [class.active]="tab.active()" (click)="setActiveTab(index)">
+        <a class="navbar-link pointer"
+          >{{ tab.label() }}
+          <span class="close pl-2" (click)="removeTab(index); $event.stopPropagation()"
+            >&times;</span
+          ></a
+        >
+      </li>
+    }
+  </ul>
+
+  <div class="tabs">
+    <ng-content></ng-content>
+  </div>
+</div>
