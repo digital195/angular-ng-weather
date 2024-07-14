@@ -5,4 +5,7 @@
 
 export const environment = {
   production: false,
+
+  // cache expires in seconds
+  cacheExpire: 7200,
 };

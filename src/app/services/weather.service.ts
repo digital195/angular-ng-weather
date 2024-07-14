@@ -6,7 +6,9 @@ import { CurrentConditions } from '../models/current-conditions.type';
 import { ConditionsAndZip } from '../models/conditions-and-zip.type';
 import { Forecast } from '../models/forecast.type';
 import { LocationService } from './location.service';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { CacheService } from './cache.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class WeatherService {
@@ -17,6 +19,7 @@ export class WeatherService {
 
   private readonly httpClient = inject(HttpClient);
   private readonly locationService = inject(LocationService);
+  private readonly cacheService = inject(CacheService);
 
   currentConditions$: Observable<ConditionsAndZip[]> = this.locationService.locations$.pipe(
     switchMap((locations) =>
@@ -32,15 +35,30 @@ export class WeatherService {
 
   getForecast$(zipcode: string): Observable<Forecast> {
     const url = `${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`;
+    const cacheKey = `forecast-${zipcode}`;
+
+    if (this.cacheService.has(cacheKey)) {
+      return of(this.cacheService.get(cacheKey));
+    }
 
     // Here we make a request to get the forecast data from the API. Note the use of backticks and an expression to insert the zipcode
-    return this.httpClient.get<Forecast>(url);
+    return this.httpClient
+      .get<Forecast>(url)
+      .pipe(map((data) => this.cacheService.save(cacheKey, data, environment.cacheExpire)));
   }
 
   private getWeather$(zipcode: string): Observable<CurrentConditions | null> {
     const url = `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`;
+    const cacheKey = `weather-${zipcode}`;
 
-    return this.httpClient.get<CurrentConditions | null>(url).pipe(catchError(() => of(null)));
+    if (this.cacheService.has(cacheKey)) {
+      return of(this.cacheService.get(cacheKey));
+    }
+
+    return this.httpClient.get<CurrentConditions | null>(url).pipe(
+      map((data) => this.cacheService.save(cacheKey, data, environment.cacheExpire)),
+      catchError(() => of(null)),
+    );
   }
 }
 

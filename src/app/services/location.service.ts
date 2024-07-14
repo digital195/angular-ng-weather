@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 
-export const LOCATIONS = 'locations';
+export const LOCATIONS = 'ng-weather-locations';
 
 @Injectable()
 export class LocationService {
